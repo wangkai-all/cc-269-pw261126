@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>发布控制台 · 本地数据产品</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark">RC</span>
+      <div>
+        <h1>发布控制台</h1>
+        <p>本地数据产品 · 三下游点对点发布</p>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span id="conn" class="pill pill-muted">连接中…</span>
+      <span id="clock" class="mono muted"></span>
+      <button id="btn-refresh" class="ghost" title="立即刷新">刷新</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" id="panel-status">
+      <div class="panel-head">
+        <h2>当前发布</h2>
+        <div class="head-actions">
+          <label class="field inline">
+            <span>策略</span>
+            <select id="policy-mode">
+              <option value="all-converged">全员一致后切版</option>
+              <option value="quorum-with-lag">法定人数 + 允许落后</option>
+            </select>
+          </label>
+          <label class="field inline" id="quorum-wrap">
+            <span>法定人数</span>
+            <select id="policy-quorum"><option>1</option><option>2</option><option>3</option></select>
+          </label>
+          <label class="field inline">
+            <span>等待窗口(分)</span>
+            <input id="policy-wait" type="number" min="1" max="1440" value="15" class="mono" style="width:68px" />
+          </label>
+          <label class="field inline">
+            <span>落后窗口(分)</span>
+            <input id="policy-lag" type="number" min="1" max="1440" value="15" class="mono" style="width:68px" />
+          </label>
+          <label class="field inline">
+            <span>兼容窗口(时)</span>
+            <input id="policy-compat" type="number" min="1" max="720" value="24" class="mono" style="width:68px" />
+          </label>
+          <button id="btn-policy" class="ghost">保存策略</button>
+        </div>
+      </div>
+      <div id="active-summary" class="summary-grid"></div>
+      <div id="promotion-box" class="promotion-box"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>下游</h2>
+        <p class="hint">“已发送”只是投递动作；“已生效”只认下游自己回报的确认。</p>
+      </div>
+      <div id="consumers" class="consumer-grid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>发布操作</h2>
+        <div class="head-actions">
+          <input id="new-version" class="mono" size="8" placeholder="v1" />
+          <select id="new-schema">
+            <option value="1">schema v1</option>
+            <option value="2">schema v2</option>
+          </select>
+          <input id="new-cohort" size="12" placeholder="cohort-标签" />
+          <button id="btn-create" class="primary">新建草稿</button>
+        </div>
+      </div>
+      <div id="releases" class="release-list"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>事件时间线</h2>
+        <div class="head-actions">
+          <label class="checkbox"><input type="checkbox" id="follow" checked /> 跟随最新</label>
+          <span id="journal-head" class="pill pill-muted mono"></span>
+        </div>
+      </div>
+      <ol id="timeline" class="timeline"></ol>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card">
+      <h3 id="modal-title">确认</h3>
+      <p id="modal-body"></p>
+      <textarea id="modal-reason" rows="2" placeholder="原因（写入审计日志）"></textarea>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="ghost">取消</button>
+        <button id="modal-confirm" class="danger">确认执行</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "release-console",
+  "version": "1.0.0",
+  "private": true,
+  "description": "本地数据产品发布控制台：发布器 + 三个可独立停启的消费者 + 网页演示",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/supervise.js",
+    "start:direct": "node src/publisher/server.js",
+    "consumer": "node src/consumer/agent.js",
+    "reset": "node scripts/reset.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
